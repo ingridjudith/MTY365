@@ -10,9 +10,19 @@ client = MongoClient('mongodb+srv://a01177640:Oc0AMR2QKYeXgFOq@mty365.154j6qb.mo
 db = client['Mty365db']
 collection = db.spots
 
-@app.route('/helloMonterrey')
+@app.route('/')
 def home():
-    return 'Hello Monterrey!'
+    return render_template('index.html')
+
+@app.route('/cards')
+def cards():
+    return render_template('cards.html')
+
+@app.route('/form')
+def form():
+	return render_template('form.html')
+
+
 
 '''
 @app.route('/create')
