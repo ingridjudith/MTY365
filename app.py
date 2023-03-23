@@ -1,37 +1,43 @@
-from flask import Flask, render_template,request,redirect,url_for
-from flask_pymongo import PyMongo
+from flask import Flask, jsonify, request
 from pymongo import MongoClient
-
+from bson.json_util import dumps
+import json
 
 app = Flask(__name__)
 
-
-client = MongoClient('mongodb+srv://a01177640:Oc0AMR2QKYeXgFOq@mty365.154j6qb.mongodb.net/?retryWrites=true&w=majority')
-db = client['Mty365db']
+client = MongoClient('mongodb+srv://a01177640:Oc0AMR2QKYeXgFOq@mty365.154j6qb.mongodb.net/?retryWrites=true&w=majority', 
+                        tls=True,
+                        tlsAllowInvalidCertificates=True)
+db = client.Mty365
 collection = db.spots
+
 
 @app.route('/helloMonterrey')
 def home():
     return 'Hello Monterrey!'
 
-'''
-@app.route('/create')
-def create_spots():
-    spots_data = {
-        'title': 'Artefacto',
-        'author': 'John Doe',
-        'location': 'https://goo.gl/maps/AXBN6ZR1zgqvHtyNA',
-        'category': 'Convivencia',
-        'image': 'https://i.imgur.com/5S8W7VJ.jpeg',
-        'description': 'Dinámica: escoges una pieza de cerámica, la pintas y se hornea @__artefacto',
+git 
+@app.route('/add_spot', methods=['POST'])
+def add_spot():
+    spotInfo = request.get_json()  # Assumes the request contains a JSON payload with the new document data
+    new_spot = {
+        'title': spotInfo['title'],
+        'author': spotInfo['author'],
+        'location': spotInfo['location'],
+        'category': spotInfo['category'],
+        'image': spotInfo['image'],
+        'description': spotInfo['description'],
     }
-    result = collection.insert_one(spots_data)
-    return f'Inserted user with ID {result.inserted_id}'
-'''
+    result = collection.insert_one(new_spot)
+    return f"Inserted document with ID {result.inserted_id}"
+
 @app.route('/spots')
 def get_spots():
     spotsList = collection.find()
-    return str(spotsList)
+    spots = []
+    for spot in spotsList:
+        spots.append(json.loads(json.dumps(spot, default=str)))
+    return jsonify(spots)
 
 if __name__ == '__main__':
     app.run()
