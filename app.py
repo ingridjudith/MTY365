@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template,request, redirect, url_for
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.json_util import dumps
 import json
@@ -25,8 +25,6 @@ def form():
 	return render_template('form.html')
 
 
-
-git 
 @app.route('/add_spot', methods=['POST'])
 def add_spot():
     spotInfo = request.get_json()  # Assumes the request contains a JSON payload with the new document data
