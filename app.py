@@ -6,9 +6,7 @@ import json
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb+srv://a01177640:Oc0AMR2QKYeXgFOq@mty365.154j6qb.mongodb.net/?retryWrites=true&w=majority', 
-                        tls=True,
-                        tlsAllowInvalidCertificates=True)
+client = MongoClient('mongodb+srv://a01177640:Oc0AMR2QKYeXgFOq@mty365.154j6qb.mongodb.net/?retryWrites=true&w=majority')
 db = client.Mty365
 collection = db.spots
 
