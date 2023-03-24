@@ -18,7 +18,7 @@ def home():
     return render_template('index.html')
 
 @app.route('/form', methods=['GET', 'POST'])
-def cards():
+def form():
     if request.method == 'POST':
         new_spot = {
         'title': request.form['nombre-lugar'],
@@ -37,9 +37,9 @@ def cards():
         return render_template('form.html')
 
 
-@app.route('/card', methods=['GET', 'POST'])
-def form():
-	return render_template('card.html')
+@app.route('/cards', methods=['GET', 'POST'])
+def cards():
+	return render_template('cards.html')
 
 @app.route('/documents')
 def get_documents():

@@ -12,22 +12,23 @@
 <body class="bg-white">
     <navigation-bar>
         <div class="navbar bg-white">
-            <div class="navbar-start">
-              <a class="btn btn-ghost normal-case text-xl">mty365</a>
+            <div class="navbar-start px-10">
+              <a class="btn btn-ghost normal-case text-xl px-10">mty365</a>
             </div>
             <div class="navbar-center hidden lg:flex">
                       
             </div>
-            <div class="navbar-end">
-              <a class="btn">Login</a>
+            <div class="navbar-end px-10">
+              <a class="btn px-10 rounded-full">Login</a>
             </div>
           </div>
     </navigation-bar>
 
     <buttons>
         <div class="bg-white py-10 h-28 text-center">
-    
-            <button type="button" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium text-lg px-5 py-2.5 text-center mr-2 mb-2 btn-lg rounded-full">Pink to Orange</button>
+
+            <a href="{{ url_for('cards')}}" class="btn btn-lg rounded-full btn-info" role="button" aria-pressed="true">Explora</a>
+            <a href="{{ url_for('form')}}" class="btn btn-lg rounded-full btn-success" role="button" aria-pressed="true">Comparte</a>
 
         </div>
     </buttons>
