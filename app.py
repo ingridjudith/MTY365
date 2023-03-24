@@ -37,12 +37,9 @@ def form():
         return render_template('form.html')
 
 
+
 @app.route('/cards', methods=['GET', 'POST'])
 def cards():
-	return render_template('cards.html')
-
-@app.route('/documents')
-def get_documents():
     documents = list(collection.find())
     return render_template('documents.html', documents=documents)
 
