@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Stops Collection</title>
+    <link href="{{url_for('static',filename='css/main.css')}}" rel="stylesheet">
+</head>
+  <body>
+    <div class="container mx-auto py-6">
+      <div class="grid grid-cols-3 gap-6">
+        {% for document in documents %}
+        <div class="max-w-80 bg-white border-gray-200 rounded-lg shadow">
+            <img src="{{ document.image }}" alt="" class="w-max h-64 rounded-t-lg mb-4">
+            <h2 class="text-lg font-bold mb-4">{{ document.title }}</h2>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ document.description }}</p>
+            <p class="text-gray-600/40">{{ document.author }}</p>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ document.category }}</p>
+            <a href="{{ document.location }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Ubicación</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>ß
+  </body>
+</html>

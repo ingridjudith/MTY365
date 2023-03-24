@@ -41,27 +41,30 @@ def form():
 def cards():
 	return render_template('cards.html')
 
+@app.route('/documents')
+def get_documents():
+    documents = list(collection.find())
+    return render_template('documents.html', documents=documents)
+
+
 
 @app.route('/add_spot', methods=['POST'])
 def add_spot():
-    spotInfo = request.get_json()  # Assumes the request contains a JSON payload with the new document data
-    new_spot = {
-        'title': spotInfo['title'],
-        'author': spotInfo['author'],
-        'location': spotInfo['location'],
-        'category': spotInfo['category'],
-        'image': spotInfo['image'],
-        'description': spotInfo['description'],
-    }
-    result = collection.insert_one(new_spot)
-    return f"Inserted document with ID {result.inserted_id}"
+    try:
+        spotInfo = request.get_json()  # Assumes the request contains a JSON payload with the new document data
+        new_spot = {
+            'title': spotInfo['title'],
+            'author': spotInfo['author'],
+            'location': spotInfo['location'],
+            'category': spotInfo['category'],
+            'image': spotInfo['image'],
+            'description': spotInfo['description'],
+        }
+        result = collection.insert_one(new_spot)
+        return f"Inserted document with ID {result.inserted_id}"
+    except:
+        return jsonify({'msg': 'Failed to add document'}), 500
 
-class JSONEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, ObjectId):
-            return str(o)
-        print("Failed to serialize object:", o)
-        return json.JSONEncoder.default(self, o)
 
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
