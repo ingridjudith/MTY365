@@ -20,3 +20,6 @@ urwid==2.0.1
 Werkzeug==0.15.3
 gunicorn
 flask-cors
+dnspython
+
+```
