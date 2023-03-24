@@ -8,15 +8,27 @@
 </head>
   <body>
     <div class="container mx-auto py-6">
-      <div class="grid grid-cols-3 gap-6">
+      <div class="grid grid-cols-4 gap-6">
         {% for document in documents %}
-        <div class="max-w-80 bg-white border-gray-200 rounded-lg shadow">
-            <img src="{{ document.image }}" alt="" class="w-max h-64 rounded-t-lg mb-4">
-            <h2 class="text-lg font-bold mb-4">{{ document.title }}</h2>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ document.description }}</p>
-            <p class="text-gray-600/40">{{ document.author }}</p>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ document.category }}</p>
-            <a href="{{ document.location }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Ubicación</a>
+        <div class="h-100 bg-white border border-gray-200 rounded-3xl shadow">
+            <div class="w-full h-52">
+                <img src="{{ document.image }}" alt="" class="w-full h-full rounded-t-lg">
+            </div>
+            <div class="px-6">
+                <h2 class="pt-5 mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ document.title }}</h2>
+                <div class="h-28">
+                    <p class="mb-3 text-sm font-normal text-gray-500">{{ document.description }}</p>
+                </div>
+                <div class="grid grid-cols-2 mb-4">
+                    <div>
+                        <p class="text-gray-600/40">{{ document.author }}</p>
+                        <p class="mb-3 text-sm font-normal text-gray-700 dark:text-gray-400">#{{ document.category }}</p>
+                    </div>
+                    <div class="w-24 justify-self-end mr-4">
+                        <a href="{{ document.location }}" class="btn btn-outline rounded-full btn-info btn-sm" role="button" aria-pressed="true">Ubicación</a>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endfor %}
       </div>
