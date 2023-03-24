@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template,request, redirect, url_for
 from pymongo import MongoClient
 from bson.json_util import dumps
 from bson import ObjectId
@@ -13,9 +13,19 @@ db = client.Mty365
 collection = db.spots
 
 
-@app.route('/helloMonterrey')
+@app.route('/')
 def home():
-    return 'Hello Monterrey!'
+    return render_template('index.html')
+
+@app.route('/cards')
+def cards():
+    return render_template('cards.html')
+
+@app.route('/form')
+def form():
+	return render_template('form.html')
+
+
 
 @app.route('/add_spot', methods=['POST'])
 def add_spot():
