@@ -1,6 +1,7 @@
-from flask import Flask, jsonify, render_template, request, redirect, url_for
+from flask import Flask, jsonify, request, render_template,request, redirect, url_for, Response
 from pymongo import MongoClient
 from bson.json_util import dumps
+from bson import ObjectId
 import json
 
 app = Flask(__name__)
@@ -39,67 +40,90 @@ def add_spot():
     result = collection.insert_one(new_spot)
     return f"Inserted document with ID {result.inserted_id}"
 
-@app.route('/spots')
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        print("Failed to serialize object:", o)
+        return json.JSONEncoder.default(self, o)
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
+
+@app.route('/get_spots', methods=['GET'])
 def get_spots():
-    spotsList = collection.find()
-    spots = []
-    for spot in spotsList:
-        spots.append(json.loads(json.dumps(spot, default=str)))
-    return jsonify(spots)
+    spots = collection.find()
+    response = {"spots": json.dumps(list(spots), cls=JSONEncoder)}
+    return jsonify(response)
+
+
+@app.route('/update_spot/<id>', methods= ['PATCH'])
+def update_spot(id):
+    
+    title = request.form['title']
+    author = request.form['author']
+    location = request.form['location']
+    category = request.form['category']
+    image= request.form['image']
+    description= request.form['description']
+    try: 
+        dbResponse = collection.update_one(
+			{"_id": ObjectId(id)},
+			{"$set": {'title': title, 
+             'author': author,
+             'location': location,
+             'category': category,
+             'image': image,
+             'description': description
+             }}
+		)
+        
+        if dbResponse.modified_count == 1:
+            return Response(
+			response= json.dumps(
+				{"message": "object updated"}),
+				status= 200,
+				mimetype= "application/json"
+			)
+            
+    except Exception as ex:
+        print("**")
+        print(ex)
+        print("**")
+        
+        return Response(
+			response= json.dumps(
+				{"message": "unable to update object"}),
+			status=500,
+			mimetype="application/json"
+			)
+
+@app.route("/delete_spot/<id>", methods = ["DELETE"])
+def delete_spot(id):
+    
+    try: 
+        dbResponse = collection.delete_one({"_id": ObjectId(id)})
+        return Response(
+			response= json.dumps(
+				{"message": "user deleted", "id": f"{id}"}),
+				status= 200,
+				mimetype= "application/json"
+			)
+        
+    except Exception as ex:
+        print("**")
+        print(ex)
+        print("**")
+        
+        return Response(
+			response= json.dumps(
+				{"message": "unable to delete object"}),
+			status=500,
+			mimetype="application/json"
+			)
 
 if __name__ == '__main__':
     app.run()
-
-
-
-'''
-
-
-client = pymongo.MongoClient("mongodb+srv://<username>:<password>@mty365.154j6qb.mongodb.net/?retryWrites=true&w=majority")
-db = client['MTY365db']
-spots = db.spots
-
-@app.route("/list")
-def lists ():
-	#Display the all Tasks
-	todos_l = todos.find()
-	a1="active"
-	return render_template('index.html',a1=a1,todos=todos_l,t=title,h=heading)
-
-@app.route("/action", methods=['POST'])
-def action ():
-	#Adding a Task
-	name=request.values.get("name")
-	desc=request.values.get("desc")
-	date=request.values.get("date")
-	pr=request.values.get("pr")
-	todos.insert({ "name":name, "desc":desc, "date":date, "pr":pr, "done":"no"})
-	return redirect("/list")
-
-@app.route("/remove")
-def remove ():
-	#Deleting a Task with various references
-	key=request.values.get("_id")
-	todos.remove({"_id":ObjectId(key)})
-	return redirect("/")
-
-@app.route("/update")
-def update ():
-	id=request.values.get("_id")
-	task=todos.find({"_id":ObjectId(id)})
-	return render_template('update.html',tasks=task,h=heading,t=title)
-
-
-@app.route("/search", methods=['GET'])
-def search():
-	#Searching a Task with various references
-
-	key=request.values.get("key")
-	refer=request.values.get("refer")
-	if(key=="_id"):
-		todos_l = todos.find({refer:ObjectId(key)})
-	else:
-		todos_l = todos.find({refer:key})
-	return render_template('searchlist.html',todos=todos_l,t=title,h=heading)
-
-'''
