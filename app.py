@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template,request, redirect, url_for, Response
+from flask import Flask, jsonify, request, render_template, request, redirect, url_for, Response
 from pymongo import MongoClient
 from bson.json_util import dumps
 from bson import ObjectId
@@ -17,13 +17,29 @@ collection = db.spots
 def home():
     return render_template('index.html')
 
-@app.route('/cards')
+@app.route('/form', methods=['GET', 'POST'])
 def cards():
-    return render_template('cards.html')
+    if request.method == 'POST':
+        new_spot = {
+        'title': request.form['nombre-lugar'],
+        'author': request.form['autor'],
+        'location': request.form['google-maps-url'],
+        'category': request.form['categoria'],
+        'image': request.form['image-url'],
+        'description': request.form['descripcion'],
+        }
+        result = collection.insert_one(new_spot)
+        print(result)
 
-@app.route('/form')
+        return render_template('form.html')
+    
+    else:
+        return render_template('form.html')
+
+
+@app.route('/card', methods=['GET', 'POST'])
 def form():
-	return render_template('form.html')
+	return render_template('card.html')
 
 
 @app.route('/add_spot', methods=['POST'])
