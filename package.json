@@ -1,0 +1,23 @@
+{
+  "name": "mty365",
+  "version": "1.0.0",
+  "description": "TC2002S.101",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create-css" : "npx tailwindcss -i ./static/src/input.css -o ./static/css/main.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ingridjudith/MTY365.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ingridjudith/MTY365/issues"
+  },
+  "homepage": "https://github.com/ingridjudith/MTY365#readme",
+  "dependencies": {
+    "tailwindcss": "^3.2.7"
+  }
+}
